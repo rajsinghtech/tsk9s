@@ -1,0 +1,65 @@
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: tsk9s
+    main: .
+    binary: tsk9s
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - "-s -w"
+
+archives:
+  - id: tsk9s
+    name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
+    files:
+      - README.md
+
+release:
+  header: |
+    ## Installation
+
+    ### Homebrew
+    ```bash
+    brew install rajsinghtech/tap/tsk9s
+    ```
+
+    ### Binary Download
+    Download the appropriate binary for your platform from the assets below.
+
+    Requires [k9s](https://k9scli.io/) on `$PATH`.
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+
+brews:
+  - name: tsk9s
+    ids:
+      - tsk9s
+    repository:
+      owner: rajsinghtech
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    directory: Formula
+    commit_author:
+      name: Raj Singh
+      email: rajsinghcpre@gmail.com
+    homepage: "https://github.com/rajsinghtech/tsk9s"
+    description: "k9s in the browser over Tailscale"
+    license: "MIT"
+    dependencies:
+      - name: k9s

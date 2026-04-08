@@ -4,11 +4,21 @@ k9s in the browser over Tailscale. Connects to Kubernetes API server proxies on 
 
 ## Install
 
+```bash
+brew install rajsinghtech/tap/tsk9s
 ```
+
+Or with Go:
+```bash
 go install github.com/rajsinghtech/tsk9s@latest
 ```
 
-Requires [k9s](https://k9scli.io/) on `$PATH`.
+Or with Docker:
+```bash
+docker run -v tsk9s-state:/data ghcr.io/rajsinghtech/tsk9s:latest --endpoints "cluster1.example.ts.net"
+```
+
+Requires [k9s](https://k9scli.io/) on `$PATH` (except Docker, which bundles it).
 
 ## Usage
 

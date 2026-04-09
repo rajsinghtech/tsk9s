@@ -2,6 +2,10 @@
 
 k9s in the browser over Tailscale. Connects to Kubernetes API server proxies on your tailnet via [tsnet](https://pkg.go.dev/tailscale.com/tsnet).
 
+<p align="center">
+  <img src="assets/demo.gif" alt="tsk9s demo" width="800">
+</p>
+
 ## Install
 
 ```bash

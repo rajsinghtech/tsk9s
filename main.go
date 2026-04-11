@@ -22,6 +22,7 @@ func main() {
 	kubeconfigPath := flag.String("kubeconfig-path", filepath.Join(os.TempDir(), fmt.Sprintf("tsk9s-%d.kubeconfig", os.Getpid())), "kubeconfig output path")
 	endpoints := flag.String("endpoints", "", "comma-separated list of k8s API server proxy FQDNs (e.g., ottawa-k8s-operator.keiretsu.ts.net,robbinsdale-k8s-operator.keiretsu.ts.net)")
 	localAddr := flag.String("local-addr", "", "also listen on this TCP address (e.g. 0.0.0.0:8080)")
+	tags := flag.String("tags", "", "comma-separated advertise-tags for OAuth auth keys (e.g. tag:k8s,tag:ottawa)")
 	flag.Parse()
 
 	if *endpoints == "" && flag.NArg() == 0 {
@@ -47,6 +48,13 @@ func main() {
 		Hostname: *hostname,
 		AuthKey:  os.Getenv("TS_AUTHKEY"),
 		Dir:      *stateDir,
+	}
+	if *tags != "" {
+		for _, t := range strings.Split(*tags, ",") {
+			if t = strings.TrimSpace(t); t != "" {
+				srv.AdvertiseTags = append(srv.AdvertiseTags, t)
+			}
+		}
 	}
 	defer srv.Close()
 

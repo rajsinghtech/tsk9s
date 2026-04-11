@@ -6,74 +6,12 @@
 <link rel="stylesheet" href="xterm.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { width: 100%; height: 100%; background: #1a1b26; overflow: hidden; color: #a9b1d6; font-family: monospace; }
-
-  #app { display: flex; width: 100%; height: 100%; }
-
-  #sidebar {
-    width: 220px;
-    min-width: 220px;
-    background: #16161e;
-    border-right: 1px solid #2a2b3c;
-    display: flex;
-    flex-direction: column;
-    padding: 12px 0;
-  }
-
-  #sidebar .title {
-    font-size: 13px;
-    font-weight: bold;
-    color: #7aa2f7;
-    padding: 0 16px 12px;
-    border-bottom: 1px solid #2a2b3c;
-    letter-spacing: 0.05em;
-  }
-
-  #cluster-list { padding: 8px 0; flex: 1; overflow-y: auto; }
-
-  .cluster-btn {
-    display: block;
-    width: 100%;
-    text-align: left;
-    background: none;
-    border: none;
-    color: #a9b1d6;
-    font-family: monospace;
-    font-size: 12px;
-    padding: 7px 16px;
-    cursor: pointer;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .cluster-btn:hover { background: #2a2b3c; color: #c0caf5; }
-  .cluster-btn.active { background: #283457; color: #7aa2f7; }
-
-  #terminal-wrap { flex: 1; overflow: hidden; position: relative; }
+  html, body { width: 100%; height: 100%; background: #1a1b26; overflow: hidden; }
   #terminal { width: 100%; height: 100%; }
-
-  #placeholder {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column; gap: 8px;
-    color: #565f89; font-size: 13px; pointer-events: none;
-  }
-  #placeholder.hidden { display: none; }
 </style>
 </head>
 <body>
-<div id="app">
-  <div id="sidebar">
-    <div class="title">tsk9s</div>
-    <div id="cluster-list"></div>
-  </div>
-  <div id="terminal-wrap">
-    <div id="placeholder">
-      <span>select a cluster</span>
-    </div>
-    <div id="terminal"></div>
-  </div>
-</div>
+<div id="terminal"></div>
 <script src="xterm.js"></script>
 <script src="addon-fit.js"></script>
 <script src="terminal.js"></script>

@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
@@ -20,6 +21,7 @@ func main() {
 	hostname := flag.String("hostname", "tsk9s", "tailnet hostname")
 	kubeconfigPath := flag.String("kubeconfig-path", filepath.Join(os.TempDir(), fmt.Sprintf("tsk9s-%d.kubeconfig", os.Getpid())), "kubeconfig output path")
 	endpoints := flag.String("endpoints", "", "comma-separated list of k8s API server proxy FQDNs (e.g., ottawa-k8s-operator.keiretsu.ts.net,robbinsdale-k8s-operator.keiretsu.ts.net)")
+	localAddr := flag.String("local-addr", "", "also listen on this TCP address (e.g. 0.0.0.0:8080)")
 	flag.Parse()
 
 	if *endpoints == "" && flag.NArg() == 0 {
@@ -78,6 +80,20 @@ func main() {
 			log.Printf("http.Serve: %v", err)
 		}
 	}()
+
+	if *localAddr != "" {
+		ll, err := net.Listen("tcp", *localAddr)
+		if err != nil {
+			log.Fatalf("listen %s: %v", *localAddr, err)
+		}
+		defer ll.Close()
+		log.Printf("also serving on http://%s", *localAddr)
+		go func() {
+			if err := http.Serve(ll, handler); err != nil {
+				log.Printf("http.Serve local: %v", err)
+			}
+		}()
+	}
 
 	<-ctx.Done()
 	log.Println("shutting down")

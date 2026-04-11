@@ -39,9 +39,14 @@ func handleTerminal(kubeconfigPath string) http.HandlerFunc {
 			return
 		}
 
-		cmd := exec.CommandContext(ctx, k9sPath)
+		args := []string{}
+		if cluster := r.URL.Query().Get("cluster"); cluster != "" {
+			args = append(args, "--context="+cluster)
+		}
+		cmd := exec.CommandContext(ctx, k9sPath, args...)
 		cmd.Env = append(os.Environ(),
 			"TERM=xterm-256color",
+			"COLORTERM=truecolor",
 			"KUBECONFIG="+kubeconfigPath,
 		)
 

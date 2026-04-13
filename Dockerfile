@@ -28,7 +28,7 @@ RUN wget -qO /usr/local/bin/kubectl "https://dl.k8s.io/release/${KUBECTL_VERSION
 
 FROM alpine:3.22
 
-RUN apk add --no-cache ca-certificates
+RUN apk add --no-cache ca-certificates xclip
 
 COPY --from=build /app/tsk9s /usr/local/bin/tsk9s
 COPY --from=build /usr/local/bin/k9s /usr/local/bin/k9s
